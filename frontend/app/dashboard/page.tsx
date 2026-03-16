@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { api, getUser, clearSession } from '@/lib/api'
 declare global { interface Window { Razorpay: any } }
-const B='http://localhost:5001/api/v1', A='#e8c547', C='#1a1a1a', D='rgba(255,255,255,0.08)'
+const B=process.env.NEXT_PUBLIC_API_URL||'http://localhost:5001/api/v1', A='#e8c547', C='#1a1a1a', D='rgba(255,255,255,0.08)'
 
 function Skeleton({w='100%',h='20px',r='6px'}:any){
   return <div style={{width:w,height:h,borderRadius:r,background:'rgba(255,255,255,0.06)',position:'relative',overflow:'hidden'}}>

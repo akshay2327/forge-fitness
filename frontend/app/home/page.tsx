@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import AuthModal from './components/AuthModal'
 declare global { interface Window { Razorpay: any } }
-const API = 'http://localhost:5001/api/v1'
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api/v1'
 
 const Athlete = () => (
   <svg viewBox="0 0 500 600" xmlns="http://www.w3.org/2000/svg" style={{width:'100%',height:'100%',display:'block'}}>

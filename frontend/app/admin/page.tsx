@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { api, getUser, clearSession } from '@/lib/api'
 const A='#e8c547',C='#1a1a1a',D='rgba(255,255,255,0.08)'
-const API_BASE='http://localhost:5001/api/v1'
+const API_BASE=process.env.NEXT_PUBLIC_API_URL||'http://localhost:5001/api/v1'
 
 function Badge({type}:{type:string}){
   const m:any={active:['rgba(76,175,125,0.15)','#4caf7d'],suspended:['rgba(232,92,58,0.15)','#e85c3a'],inactive:['rgba(136,136,128,0.15)','#888880'],admin:['rgba(74,158,255,0.15)','#4a9eff'],member:['rgba(76,175,125,0.12)','#4caf7d'],trainer:['rgba(232,197,71,0.12)',A],free:['rgba(136,136,128,0.1)','#888880'],standard:['rgba(76,175,125,0.15)','#4caf7d'],pro:['rgba(232,197,71,0.15)',A],elite:['rgba(74,158,255,0.15)','#4a9eff']}
