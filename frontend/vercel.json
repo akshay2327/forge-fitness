@@ -5,6 +5,7 @@
   "devCommand": "next dev",
   "installCommand": "npm install",
   "regions": ["bom1"],
+  "public": true,
   "headers": [
     {
       "source": "/api/(.*)",
