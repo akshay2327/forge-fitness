@@ -101,32 +101,36 @@ router.get('/trainers', async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed to fetch trainers' }) }
 })
 
-// Get gym settings (stored in a special admin user doc or env)
+// Gym Settings Model & Persistence
+const mongoose = require('mongoose')
+const settingsSchema = new mongoose.Schema({ key: { type: String, unique: true }, value: String }, { timestamps: true })
+const Settings = mongoose.models.Settings || mongoose.model('Settings', settingsSchema)
+
+// Get gym settings
 router.get('/settings', async (req, res) => {
   try {
-    // Return current settings — stored in process.env or a future Settings model
+    const dbSettings = await Settings.find()
+    const sMap = {}
+    dbSettings.forEach(s => sMap[s.key] = s.value)
+
     res.json({
       settings: {
-        gymName:    process.env.GYM_NAME    || 'FORGE Fitness',
-        location:   process.env.GYM_LOCATION || 'Jaipur, Rajasthan',
-        email:      process.env.GYM_EMAIL    || 'admin@forgefitness.com',
-        phone:      process.env.GYM_PHONE    || '+91 98765 43210',
-        gst:        process.env.GYM_GST      || '27AABCU9603R1Z1',
-        pricingStandard: process.env.PRICE_STANDARD || '1999',
-        pricingPro:      process.env.PRICE_PRO      || '3499',
-        pricingElite:    process.env.PRICE_ELITE     || '5999',
-        trialDays:       process.env.TRIAL_DAYS      || '7',
-        refundDays:      process.env.REFUND_DAYS     || '7',
+        gymName:    sMap.gymName    || process.env.GYM_NAME    || 'FORGE Fitness',
+        location:   sMap.location   || process.env.GYM_LOCATION || 'Jaipur, Rajasthan',
+        email:      sMap.email      || process.env.GYM_EMAIL    || 'admin@forgefitness.com',
+        phone:      sMap.phone      || process.env.GYM_PHONE    || '+91 98765 43210',
+        gst:        sMap.gst        || process.env.GYM_GST      || '27AABCU9603R1Z1',
+        pricingStandard: sMap.pricingStandard || process.env.PRICE_STANDARD || '1999',
+        pricingPro:      sMap.pricingPro       || process.env.PRICE_PRO      || '3499',
+        pricingElite:    sMap.pricingElite    || process.env.PRICE_ELITE     || '5999',
+        trialDays:       sMap.trialDays       || process.env.TRIAL_DAYS      || '7',
+        refundDays:      sMap.refundDays      || process.env.REFUND_DAYS     || '7',
       }
     })
   } catch (err) { res.status(500).json({ error: 'Failed to fetch settings' }) }
 })
 
-// Save gym settings — persist to a Settings collection
-const mongoose = require('mongoose')
-const settingsSchema = new mongoose.Schema({ key: { type: String, unique: true }, value: String }, { timestamps: true })
-const Settings = mongoose.models.Settings || mongoose.model('Settings', settingsSchema)
-
+// Save gym settings
 router.patch('/settings', async (req, res) => {
   try {
     const fields = ['gymName','location','email','phone','gst','pricingStandard','pricingPro','pricingElite','trialDays','refundDays']
