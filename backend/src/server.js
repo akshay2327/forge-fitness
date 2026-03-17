@@ -20,6 +20,7 @@ const adminRoutes      = require('./routes/admin')
 const uploadRoutes     = require('./routes/upload')
 
 const app = express()
+app.set('trust proxy', 1)
 connectDB()
 
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }))
